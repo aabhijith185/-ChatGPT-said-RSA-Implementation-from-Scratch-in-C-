@@ -1,11 +1,7 @@
 #ifndef RSA_H_
 #define RSA_H_
 
-#include <boost/multiprecision/cpp_int.hpp>
-#include <vector>
-#include <string>
-
-using boost::multiprecision::cpp_int;
+#include"Helper.h"
 
 class RSACryptosystem {
 public:
@@ -17,8 +13,8 @@ public:
     unsigned d;//(e*d)mod phi_n =1
     unsigned secret_message;
 
-    cpp_int cipher_text;
-    cpp_int decrypted_text;
+    vector<unsigned> encrypted_message;
+    string decrypted_text;
 
     void prompter();
     void primality_check();
@@ -27,8 +23,8 @@ public:
     unsigned calculate_e();
     unsigned calculate_d();
 
-    cpp_int encrypt();
-    cpp_int decrypt();
+    vector<unsigned> encrypt(const string& message);
+    string decrypt(const vector<unsigned>& ciphertext);
 };
 
 #endif /* RSA_H_ */

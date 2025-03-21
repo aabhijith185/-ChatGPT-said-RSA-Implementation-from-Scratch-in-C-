@@ -4,14 +4,10 @@
 * large prime numbers.
 */
 
-#include <iostream>
-#include <boost/multiprecision/cpp_int.hpp>
 #include <stdexcept>
 #include <numeric>
 #include"RSA.h"
 
-using namespace std;
-using namespace boost::multiprecision;
 
 /*
  * Prompts the user to input two prime numbers.
@@ -42,10 +38,10 @@ void RSACryptosystem::primality_check() {
     vector<unsigned> q_factors;
     for (unsigned i = 2; i <= static_cast<unsigned>(sqrt(static_cast<double>(q))); i++)
     {
-     	if(p%i == 0)
+     	if(q%i == 0)
      	{
      		q_factors.push_back(i);
-     		q_factors.push_back(p/i);
+     		q_factors.push_back(q/i);
      	}
      }
 
@@ -97,22 +93,34 @@ unsigned RSACryptosystem::calculate_d() {
  * The ciphertext is computed as:
  * `cipher_text = (secret_message^e) mod n`
  */
-cpp_int RSACryptosystem::encrypt() {
-    cout << "Please enter a message (numeric) to encrypt: ";
-    cin >> secret_message;
+vector<unsigned> RSACryptosystem::encrypt(const string& message)
+{
+	//convert the input text to numerical format for encryption
+	vector<unsigned> numeric_message = ascii_to_int(message);
 
-    if (secret_message >= n) {
-        throw runtime_error("Message should be smaller than n.");
-    }
+	for(unsigned num : numeric_message)
+	{
+		if(num >= n)
+		{
+			throw runtime_error("Message character should be smaller than n");
+		}
+		encrypted_message.push_back(modExp(num,e,n));
+	}
 
-    cipher_text= powm(secret_message, e, n);
-    return cipher_text;
+	return encrypted_message;
 }
 /*
  * Decrypts the ciphertext using RSA decryption.
  * decrypted_text = (cipher_text^d) mod n
  */
-cpp_int RSACryptosystem::decrypt() {
-	decrypted_text=powm(cipher_text, d, n);
-    return decrypted_text;
+string RSACryptosystem::decrypt(const vector<unsigned>& ciphertext) {
+	vector<unsigned> decrypted_array;
+
+	for(auto cipher:ciphertext)
+	{
+		decrypted_array.push_back(modExp(cipher,d,n));
+	}
+
+	decrypted_text = int_to_ascii(decrypted_array);
+	return decrypted_text;
 }

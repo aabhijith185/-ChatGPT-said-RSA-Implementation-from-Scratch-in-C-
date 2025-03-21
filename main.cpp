@@ -21,10 +21,18 @@ int main() {
         cout << "e = " << rsa.calculate_e() << endl;
         cout << "d = " << rsa.calculate_d() << endl;
 
-        // Encrypt and display the message
-        cout << "Encrypted message: " << rsa.encrypt() << endl;
-        // Decrypt and display the message
-        cout << "Decrypted message: " << rsa.decrypt() << endl;
+        string message;
+        cout<<"Enter the user input"<<endl;
+        cin>>message;
+
+        cout<<"original text: "<<message<<endl;
+        vector<unsigned> encrypted_text = rsa.encrypt(message);
+
+        cout<<"Encrypted Message";
+        print_encrypted_text(encrypted_text);
+
+        string decrypted_message = rsa.decrypt(encrypted_text);
+        cout<<"Decrypted Message : "<<decrypted_message<<endl;
     }
     catch (const runtime_error& e) {
         cerr << "Error: " << e.what() << endl;
