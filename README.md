@@ -2,7 +2,7 @@
 
 
 
-RSA Implentation from Scratch
+RSA Implementation from Scratch
 ==========================
 Overview
 
